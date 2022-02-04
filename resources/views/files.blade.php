@@ -57,14 +57,14 @@
                                         <div style="dispay: inline; width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
                                             <h6>{{$file->filename}}</h6>
                                         </div>
-                                    <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
-                                    <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
+                                        <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
                                     <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
                                     </div>
                                 </div>
                             @endif
                         @endif
-                        @else
+                    @else
                         {{-- If the logged user is admin, show all files instead --}}
                         <div class="card mx-1 mt-2" style="width: 250px">
                             <div class="card-body">
@@ -93,6 +93,34 @@
         
                 <tbody>
                     @foreach ($files as $file)
+                    @if($LoggedUserInfo['role'] != 'Admin')
+                        @if($file->user != NULL )
+                            @if($file->user->role == $LoggedUserInfo['role'])
+                                <tr>
+                                    <td>{{$file->filename}}</td>
+                                    <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center">
+                                            <div>
+                                                <a href="#">
+                                                    <button id="viewUser" class="btn btn-primary btn-sm view">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                            <form action="#" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-success btn-sm mx-2">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endif
+                    @else
                         <tr>
                             <td>{{$file->filename}}</td>
                             <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
@@ -115,6 +143,7 @@
                                 </div>
                             </td>
                         </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>
