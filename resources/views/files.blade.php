@@ -47,26 +47,31 @@
         <div class="tab-pane fade show active" id="gridview" role="tabpanel" aria-labelledby="grid-tab">
             <div class="row">
                 @foreach($files as $file)
+
+                    {{-- If the logged user is not admin, show the files of their respective roles only --}}
                     @if($LoggedUserInfo['role'] != 'Admin')
-                        @if($file->user->role == $LoggedUserInfo['role'])
-                            <div class="card mx-1 mt-2" style="width: 250px">
-                                <div class="card-body">
-                                    <div style="dispay: inline; width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
-                                        <h6>{{$file->filename}}</h6>
+                        @if($file->user != NULL )
+                            @if($file->user->role == $LoggedUserInfo['role'])
+                                <div class="card mx-1 mt-2" style="width: 250px">
+                                    <div class="card-body">
+                                        <div style="dispay: inline; width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+                                            <h6>{{$file->filename}}</h6>
+                                        </div>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
+                                    <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
                                     </div>
-                                <h6 class="card-subtitle mb-2 text-muted">{{$file->user->first_name}} {{$file->user->last_name}}</h6>
-                                <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
-                                <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
                                 </div>
-                            </div>
+                            @endif
                         @endif
                         @else
+                        {{-- If the logged user is admin, show all files instead --}}
                         <div class="card mx-1 mt-2" style="width: 250px">
                             <div class="card-body">
                                 <div style="dispay: inline; width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
                                     <h6>{{$file->filename}}</h6>
                                 </div>
-                            <h6 class="card-subtitle mb-2 text-muted">{{$file->user->first_name}} {{$file->user->last_name}}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
                             <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
                             <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
                             </div>
@@ -90,7 +95,7 @@
                     @foreach ($files as $file)
                         <tr>
                             <td>{{$file->filename}}</td>
-                            <td>{{$file->user->first_name}} {{$file->user->last_name}}</td>
+                            <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <div>
