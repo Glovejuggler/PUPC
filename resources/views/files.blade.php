@@ -23,7 +23,7 @@
         {{-- Ayaw gumana ng multiple file uploads --}}
         <div class="row mb-2">
             <label class="col-form-label" for="chooseFile">Select file/s to upload</label>
-            <input type="file" name="file" class="form-control" id="chooseFile">
+            <input type="file" name="file" class="form-control" id="chooseFile" multiple>
             
             <button type="submit" name="submit" class="btn btn-primary btn-block mt-3">
                 Upload Files
@@ -54,8 +54,8 @@
                             @if($file->user->role == $LoggedUserInfo['role'])
                                 <div class="card mx-1 mt-2" style="width: 250px">
                                     <div class="card-body">
-                                        <div style="dispay: inline; width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
-                                            <h6>{{$file->filename}}</h6>
+                                        <div class="col">
+                                            <h6 class="text-truncate">{{$file->filename}}</h6>
                                         </div>
                                         <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
                                         <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
@@ -68,8 +68,8 @@
                         {{-- If the logged user is admin, show all files instead --}}
                         <div class="card mx-1 mt-2" style="width: 250px">
                             <div class="card-body">
-                                <div style="dispay: inline; width: 180px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
-                                    <h6>{{$file->filename}}</h6>
+                                <div class="col">
+                                    <h6 class="text-truncate">{{$file->filename}}</h6>
                                 </div>
                             <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
                             <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
@@ -87,6 +87,7 @@
                     <tr>
                         <th>File name</th>
                         <th>Uploader</th>
+                        <th>Date uploaded</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -99,6 +100,7 @@
                                 <tr>
                                     <td>{{$file->filename}}</td>
                                     <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
+                                    <td>{{ $file->created_at }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
                                     <td>
                                         <div class="d-flex justify-content-center">
                                             <div>
@@ -124,6 +126,7 @@
                         <tr>
                             <td>{{$file->filename}}</td>
                             <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
+                            <td>{{ $file->created_at }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <div>

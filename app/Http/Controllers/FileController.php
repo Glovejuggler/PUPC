@@ -31,7 +31,7 @@ class FileController extends Controller
             $fileName = $req->file->getClientOriginalName();
             $filePath = $req->file('file')->storeAs('uploads', $fileName, 'public');
 
-            $fileModel->filename = $req->file->getClientOriginalName();
+            $fileModel->filename = $fileName;
             $fileModel->filepath = '/storage/' . $filePath;
             $fileModel->uploader_id = $userid;
 
