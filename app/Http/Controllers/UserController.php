@@ -28,8 +28,9 @@ class UserController extends Controller
     public function show(User $user){
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $user = User::findorfail($user->id);
+        $files = File::where('uploader_id','=',$user->id)->get();
 
-        return view('show', compact('user'), $data);
+        return view('show', compact('user','files'), $data);
     }
 
     public function create(Request $request){

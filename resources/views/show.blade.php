@@ -36,6 +36,42 @@
         <div class="form-group">
             <label for="email" class="col-form-label">Email:</label>
             <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}" disabled>
+        </div><br>
+        <h4>Files</h4>
+        <div class="row mx-6">
+            <table id="myTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>File name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($files as $file)
+                        <tr>
+                            <td>{{ $file->filename }}</td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <div>
+                                        <a href="#">
+                                            <button id="viewUser" class="btn btn-primary btn-sm view">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <form action="#" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-success btn-sm mx-2">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
