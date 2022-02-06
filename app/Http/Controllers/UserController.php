@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\File;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\MainController;
 
@@ -70,7 +71,8 @@ class UserController extends Controller
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
 
         $user = User::findOrFail($user->id);
-        return view('edit', compact('user'), $data);
+        $roles = Role::all();
+        return view('edit', compact('user','roles'), $data);
     }
 
     public function update(Request $request, User $user){

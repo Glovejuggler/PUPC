@@ -30,8 +30,9 @@
             <label class="col-form-label">Role:</label>
             <select class="form-select" aria-label="Default select example" id="role" name="role">
                 <option value="" selected disabled hidden>{{ $user->role }}</option>
-                <option value="Admin">Admin</option>
-                <option value="User">User</option>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->role_name }}">{{ $role->role_name }}</option>
+                @endforeach
             </select>
         </div>
         <div class="form-group">
