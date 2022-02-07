@@ -62,7 +62,7 @@
                             <button type="submit" class="btn btn-danger btn-sm mx-2"
                                 data-toggle="modal"
                                 data-target="#removeRoleModal"
-                                data-url="{{ route('role.destroy', $role) }}"
+                                data-url="{{route('role.destroy', $role->id)}}"
                                 id="btn-delete-role">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -75,7 +75,7 @@
                                             <h5 class="modal-title" id="removeRoleLabel">Confirmation</h5>
                                             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="{{ route('role.destroy', $role) }}" method="POST" id="removeRoleModalForm">
+                                        <form action="{{route('role.destroy', $role->id)}}" method="POST" id="removeRoleModalForm">
                                             @method('DELETE')
                                             @csrf
                                             <div class="modal-body">

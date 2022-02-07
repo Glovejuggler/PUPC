@@ -97,6 +97,6 @@ class RoleController extends Controller
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $role->delete();
 
-        return Redirect()->route('role.roleslist');
+        return Redirect()->back();
     }
 }
