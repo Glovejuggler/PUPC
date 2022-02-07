@@ -21,7 +21,7 @@ Route::post('/create', 'App\Http\Controllers\UserController@create')->name('user
 Route::delete('delete/{user}', 'App\Http\Controllers\UserController@delete')->name('user.delete');
 
 Route::post('/store', 'App\Http\Controllers\RoleController@store')->name('role.store');
-Route::delete('delete/{role}', 'App\Http\Controllers\RoleController@destroy')->name('role.destroy');
+Route::delete('/delete/{role}', 'App\Http\Controllers\RoleController@destroy')->name('role.destroy');
 
 Route::post('/login/auth/check', 'App\Http\Controllers\MainController@loginCheck')->name('login.check');
 Route::get('/logout', 'App\Http\Controllers\MainController@logout')->name('logout');

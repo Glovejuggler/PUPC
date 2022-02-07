@@ -20,7 +20,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalTitle">Add new role</h5>
+                    <h5 class="modal-title" id="addRoleModalTitle">Add new role</h5>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"></span>
                     </button>
@@ -72,14 +72,14 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="removeUserLabel">Confirmation</h5>
+                                            <h5 class="modal-title" id="removeRoleLabel">Confirmation</h5>
                                             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <form action="{{ route('role.destroy', $role) }}" method="POST" id="removeRoleModalForm">
                                             @method('DELETE')
                                             @csrf
                                             <div class="modal-body">
-                                                Are you sure you want to delete this user?
+                                                Are you sure you want to delete this role?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
