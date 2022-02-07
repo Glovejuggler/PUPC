@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\User;
 
 class RoleController extends Controller
 {
@@ -14,9 +15,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $roles = Role::all();
 
-        return view('roleslist', compact('roles'));
+        return view('roleslist', compact('roles'), $data);
     }
 
     /**
@@ -37,7 +39,17 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'role_name' => 'required|unique:roles',
+        ]);
+
+        $role = new Role;
+
+        $role->role_name = $request->role_name;
+
+        $role->save();
+
+        return redirect()->route('role.roleslist');
     }
 
     /**
@@ -80,8 +92,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        //
+        $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
+        $role->delete();
+
+        return Redirect()->route('role.roleslist');
     }
 }

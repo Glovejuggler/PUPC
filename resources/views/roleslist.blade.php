@@ -20,21 +20,22 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalTitle">Add new user</h5>
+                    <h5 class="modal-title" id="addRoleModalTitle">Add new role</h5>
                     <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true"></span>
                     </button>
                 </div>
-                <form action="{{ route('role.create') }}" method="POST">
+                <form action="{{ route('role.store') }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <label for="first_name" class="col-form-label">First Name:</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            <label for="role_name" class="col-form-label">Role:</label>
+                            <input type="text" class="form-control" id="role_name" name="role_name" required>
                         </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -55,13 +56,13 @@
         <tbody>
             @foreach ($roles as $role)
                 <tr>
-                    <td>{{$role->id}}</td>
+                    <td>{{$role->role_name}}</td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-danger btn-sm mx-2"
                                 data-toggle="modal"
                                 data-target="#removeRoleModal"
-                                data-url="{{route('role.delete', $role)}}"
+                                data-url="{{ route('role.destroy', $role) }}"
                                 id="btn-delete-role">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -71,14 +72,14 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="removeUserLabel">Confirmation</h5>
+                                            <h5 class="modal-title" id="removeRoleLabel">Confirmation</h5>
                                             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="{{route('role.delete', $role)}}" method="POST" id="removeRoleModalForm">
+                                        <form action="{{ route('role.destroy', $role) }}" method="POST" id="removeRoleModalForm">
                                             @method('DELETE')
                                             @csrf
                                             <div class="modal-body">
-                                                Are you sure you want to delete this user?
+                                                Are you sure you want to delete this role?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
