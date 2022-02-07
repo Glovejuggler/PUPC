@@ -23,7 +23,7 @@
         {{-- Ayaw gumana ng multiple file uploads --}}
         <div class="row mb-2">
             <label class="col-form-label" for="chooseFile">Select file/s to upload</label>
-            <input type="file" name="file" class="form-control" id="chooseFile" multiple>
+            <input type="file" name="file" class="form-control" id="chooseFile">
             
             <button type="submit" name="submit" class="btn btn-primary btn-block mt-3">
                 Upload Files

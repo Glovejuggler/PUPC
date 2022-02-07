@@ -16,6 +16,12 @@
                 Users
             </a>
         </li>
+        <li>
+            <a class="{{ Request::is('roles') ? 'active' : ''}}" href="{{ route('role.roleslist') }}">
+                <i class="fas fa-users icon"></i>
+                Roles
+            </a>
+        </li>
         @endif
         <li>
             <a class="{{ Request::is('uploadfile') ? 'active' : ''}}" href="{{ route('file.upload') }}">

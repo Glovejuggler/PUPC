@@ -20,6 +20,8 @@ use App\Http\Controllers\FileController;
 Route::post('/create', 'App\Http\Controllers\UserController@create')->name('user.create');
 Route::delete('delete/{user}', 'App\Http\Controllers\UserController@delete')->name('user.delete');
 
+Route::post('/store', 'App\Http\Controllers\RoleController@store')->name('role.store');
+Route::delete('delete/{role}', 'App\Http\Controllers\RoleController@destroy')->name('role.destroy');
 
 Route::post('/login/auth/check', 'App\Http\Controllers\MainController@loginCheck')->name('login.check');
 Route::get('/logout', 'App\Http\Controllers\MainController@logout')->name('logout');
@@ -37,5 +39,6 @@ Route::group(['middleware'=>['UserCheck']], function(){
     Route::get('/', 'App\Http\Controllers\MainController@login')->name('login');
     Route::get('/dashboard', 'App\Http\Controllers\UserController@index')->name('user.index');
     Route::get('/users', 'App\Http\Controllers\UserController@users')->name('user.userslist');
+    Route::get('/roles', 'App\Http\Controllers\RoleController@index')->name('role.roleslist');
     Route::get('/uploadfile', 'App\Http\Controllers\FileController@index')->name('file.upload');
 });
