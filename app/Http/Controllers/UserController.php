@@ -23,7 +23,8 @@ class UserController extends Controller
     public function users(){
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $users = User::all();
-        return view('userslist', compact('users'), $data);
+        $roles = Role::all();
+        return view('userslist', compact('users', 'roles'), $data);
     }
 
     public function show(User $user){

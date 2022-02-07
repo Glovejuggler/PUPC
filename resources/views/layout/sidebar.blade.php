@@ -18,7 +18,7 @@
         </li>
         <li>
             <a class="{{ Request::is('roles') ? 'active' : ''}}" href="{{ route('role.roleslist') }}">
-                <i class="fas fa-users icon"></i>
+                <i class="fas fa-user-tag icon"></i>
                 Roles
             </a>
         </li>
