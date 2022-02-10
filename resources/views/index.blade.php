@@ -9,7 +9,7 @@
     @endif
     <div class="container-fluid row">
         @if($LoggedUserInfo['role']=='Admin')
-        <div class="card border-left-primary mx-2" style="width: 18rem;">
+        <div class="card mx-2" style="width: 18rem;">
             <div class="card-body">
             <h5 class="card-title">Total users</h5>
             <p class="card-text"><i class="fas fa-users"> </i> {{ $numberOfUsers }}</p>
