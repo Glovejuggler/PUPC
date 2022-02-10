@@ -1,9 +1,12 @@
 @extends('layout.master')
 @section('content')
     <!-- Index -->
-    <div class="alert alert-success">
-        Welcome, {{ $LoggedUserInfo['first_name'] }}
-    </div>
+    @if(Session::get('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            Welcome, <strong>{{ $LoggedUserInfo['first_name'].' '.$LoggedUserInfo['last_name'] }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="container-fluid row">
         @if($LoggedUserInfo['role']=='Admin')
         <div class="card border-left-primary mx-2" style="width: 18rem;">

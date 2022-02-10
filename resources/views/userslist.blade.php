@@ -48,7 +48,7 @@
                         </div>
                         <div class="form-group">
                             <label for="address" class="col-form-label">Address:</label>
-                            <input type="text" class="form-control" id="address" name="address">
+                            <input type="text" class="form-control" id="address" name="address" required>
                         </div>
                         <div class="form-group">
                             <label class="col-form-label">Role:</label>

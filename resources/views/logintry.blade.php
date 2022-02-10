@@ -18,7 +18,7 @@
                 <div class="sign-in-htm">
                     <form action="{{ route('login.check') }}" method="post">
                         @if(Session::get('fail'))
-                            <div class="alert alert-danger">
+                            <div class="text-danger mb-2">
                                 {{ Session::get('fail') }}
                             </div>
                         @endif

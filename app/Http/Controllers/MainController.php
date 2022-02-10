@@ -27,7 +27,7 @@ class MainController extends Controller
             // check password
             if(Hash::check($request->password, $userInfo->password)){
                 $request->session()->put('LoggedUser', $userInfo->id);
-                return redirect()->route('user.index');
+                return redirect()->route('user.index')->with('success', 'Welcome');
             }else{
                 return back()->with('fail', 'Incorrect password');
             }
