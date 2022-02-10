@@ -39,6 +39,10 @@
             <label for="email" class="col-form-label">Email:</label>
             <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}">
         </div>
+        <div class="form-group">
+            <label for="password" class="col-form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
         <div class="d-grid gap-2 mt-3">
             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
             <a href="{{ url()->previous() }}" type="button" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>

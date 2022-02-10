@@ -100,7 +100,7 @@
                                 <tr>
                                     <td>{{$file->filename}}</td>
                                     <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
-                                    <td>{{ $file->created_at }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
+                                    <td>{{ $file->created_at->format('F d, Y \a\t H:i:s') }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
                                     <td>
                                         <div class="d-flex justify-content-center">
                                             <div>
@@ -126,7 +126,7 @@
                         <tr>
                             <td>{{$file->filename}}</td>
                             <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
-                            <td>{{ $file->created_at }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
+                            <td>{{ $file->created_at->format('F d, Y \a\t H:i:s') }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <div>

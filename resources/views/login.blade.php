@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login | {{ config('app.name') }}</title>
 
+
+    <!-- Custom Login CSS -->
+    <link rel="stylesheet" href="{{style.css}}">
     <!-- FontAwesome CDn -->
     <script src="https://kit.fontawesome.com/7e42705d1a.js" crossorigin="anonymous"></script>
     <!-- Bootstrap -->

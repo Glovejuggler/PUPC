@@ -10,18 +10,18 @@
             </a>
         </li>
         @if ($LoggedUserInfo['role'] == 'Admin')
-        <li>
-            <a class="{{ Request::is('users') ? 'active' : ''}}" href="{{ route('user.userslist') }}">
-                <i class="fas fa-users icon"></i>
-                Users
-            </a>
-        </li>
-        <li>
-            <a class="{{ Request::is('roles') ? 'active' : ''}}" href="{{ route('role.roleslist') }}">
-                <i class="fas fa-user-tag icon"></i>
-                Roles
-            </a>
-        </li>
+            <li>
+                <a class="{{ Request::is('users') ? 'active' : ''}}" href="{{ route('user.userslist') }}">
+                    <i class="fas fa-users icon"></i>
+                    Users
+                </a>
+            </li>
+            <li>
+                <a class="{{ Request::is('roles') ? 'active' : ''}}" href="{{ route('role.roleslist') }}">
+                    <i class="fas fa-user-tag icon"></i>
+                    Roles
+                </a>
+            </li>
         @endif
         <li>
             <a class="{{ Request::is('uploadfile') ? 'active' : ''}}" href="{{ route('file.upload') }}">

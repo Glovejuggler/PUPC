@@ -30,6 +30,7 @@ Route::get('/logout', 'App\Http\Controllers\MainController@logout')->name('logou
 
 Route::post('/uploadfile', 'App\Http\Controllers\FileController@fileUpload')->name('uploadfile');
 Route::get('/file/{file}', 'App\Http\Controllers\FileController@view')->name('viewFile');
+Route::get('/myProfile', 'App\Http\Controllers\UserController@myProfile')->name('view.myProfile');
 
 Route::get('/users/{user}', 'App\Http\Controllers\UserController@show')->name('user.show');
 Route::get('/users/{user}/edit', 'App\Http\Controllers\UserController@edit')->name('user.edit');

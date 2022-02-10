@@ -24,6 +24,11 @@ class UserController extends Controller
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $users = User::all();
         $roles = Role::all();
+
+        if ($data['LoggedUserInfo']->role != 'Admin'){
+            return redirect()->back();
+        }
+
         return view('userslist', compact('users', 'roles'), $data);
     }
 
@@ -77,11 +82,24 @@ class UserController extends Controller
     }
 
     public function update(Request $request, User $user){
+        $this->validate($request, [
+            'password' => 'sometimes|required|min:8|max:20',
+        ]);
+
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $userInfo = User::findOrFail($user->id);
+
         $userInfo->update(
             $request->all()
         );
         return redirect()->route('user.show', $user->id);
+    }
+
+    // User's Own Profile Functions
+    public function myProfile(){
+        $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
+        $files = File::where('uploader_id','=',$data['LoggedUserInfo']->id)->get();
+
+        return view('myProfile', compact('files'), $data);
     }
 }
