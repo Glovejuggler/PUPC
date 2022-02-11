@@ -5,7 +5,7 @@
     <h4>
         Edit Information
     </h4>
-    <form action="{{ route('user.update', $user) }}" method="POST">
+    <form action="{{ route('me.update') }}" method="POST">
     @csrf
     @method('PUT')
         <div class="row">
@@ -28,7 +28,7 @@
         </div>
         <div class="form-group">
             <label class="col-form-label">Role:</label>
-            <select class="form-select" aria-label="Default select example" id="role" name="role" required>
+            <select class="form-select" aria-label="Default select example" id="role" name="role" disabled>
                 <option value="{{ $user->role }}" selected hidden>{{ $user->role }}</option>
                 @foreach ($roles as $role)
                     <option value="{{ $role->role_name }}">{{ $role->role_name }}</option>
@@ -38,10 +38,6 @@
         <div class="form-group">
             <label for="email" class="col-form-label">Email:</label>
             <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
-        </div>
-        <div class="form-group">
-            <label for="password" class="col-form-label">Password:</label>
-            <input type="password" class="form-control" id="password" name="password">
         </div>
         <div class="d-grid gap-2 mt-3">
             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>

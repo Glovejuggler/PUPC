@@ -52,26 +52,48 @@
                             <td>{{ $file->filename }}</td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <div>
-                                        <a href="#">
-                                            <button id="viewUser" class="btn btn-primary btn-sm view">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <form action="#" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-success btn-sm mx-2">
-                                            <i class="fas fa-download"></i>
-                                        </button>
-                                    </form>
+                                    @if (in_array(pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION), $viewable))
+                                        <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                                    @endif
+                                    <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success mx-1"><i class="fas fa-download"></i></a>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#removeFileModal"
+                                        data-url="{{route('file.delete', $file)}}"
+                                        id="btn-delete-file">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    {{-- Delete Confirm Modal --}}
+    <div class="modal fade" id="removeFileModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeFileLabel">Confirmation</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{route('file.delete', $file)}}" method="POST" id="removeFileModalForm">
+                    @method('DELETE')
+                    @csrf
+                    <div class="modal-body">
+                        Are you sure you want to delete this file?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash icon-left"></i> Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

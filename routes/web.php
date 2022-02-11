@@ -41,6 +41,12 @@ Route::get('/users/{user}', 'App\Http\Controllers\UserController@show')->name('u
 Route::get('/users/{user}/edit', 'App\Http\Controllers\UserController@edit')->name('user.edit');
 Route::put('users/{user}', 'App\Http\Controllers\UserController@update')->name('user.update');
 
+// me
+Route::get('/editmyprofile', 'App\Http\Controllers\UserController@editmyprofile')->name('me.edit');
+Route::put('/updateme', 'App\Http\Controllers\UserController@updateme')->name('me.update');
+Route::get('/changepassword', 'App\Http\Controllers\UserController@changepass')->name('me.changepw');
+Route::put('/udpatepass', 'App\Http\Controllers\UserController@updatepassword')->name('me.updatepw');
+
 Route::group(['middleware'=>['UserCheck']], function(){
     Route::get('/', 'App\Http\Controllers\MainController@login')->name('login');
     Route::get('/dashboard', 'App\Http\Controllers\UserController@index')->name('user.index');

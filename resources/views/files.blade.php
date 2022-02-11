@@ -24,7 +24,7 @@
         {{-- Ayaw gumana ng multiple file uploads --}}
         <div class="row mb-2">
             <label class="col-form-label" for="chooseFile">Select file/s to upload</label>
-            <input type="file" name="file" class="form-control" id="chooseFile">
+            <input type="file" name="file[]" class="form-control" id="chooseFile" multiple>
             
             <button type="submit" name="submit" class="btn btn-primary btn-block mt-3">
                 Upload Files
@@ -48,56 +48,26 @@
         <div class="tab-pane fade show active" id="gridview" role="tabpanel" aria-labelledby="grid-tab">
             <div class="row">
                 @foreach($files as $file)
-
-                    {{-- If the logged user is not admin, show the files of their respective roles only --}}
-                    @if($LoggedUserInfo['role'] != 'Admin')
-                        @if($file->user != NULL )
-                            @if($file->user->role == $LoggedUserInfo['role'])
-                                <div class="card mx-1 mt-2" style="width: 250px">
-                                    <div class="card-body">
-                                        <div class="col">
-                                            <h6 class="text-truncate">{{$file->filename}}</h6>
-                                        </div>
-                                        <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
-                                        {{-- <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a> --}}
-                                        @if (in_array(pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION), $viewable))
-                                            <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
-                                        @endif
-                                        <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            data-toggle="modal"
-                                            data-target="#removeFileModal"
-                                            data-url="{{route('file.delete', $file)}}"
-                                            id="btn-delete-file">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            @endif
-                        @endif
-                    @else
-                        {{-- If the logged user is admin, show all files instead --}}
-                        <div class="card mx-1 mt-2" style="width: 250px">
-                            <div class="card-body">
-                                <div class="col">
-                                    <h6 class="text-truncate">{{$file->filename}}</h6>
-                                </div>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
-                                {{-- <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a> --}}
-                                @if (in_array(pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION), $viewable))
-                                    <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
-                                @endif
-                                <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    data-toggle="modal"
-                                    data-target="#removeFileModal"
-                                    data-url="{{route('file.delete', $file)}}"
-                                    id="btn-delete-file">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                    {{-- If the logged user is admin, show all files instead --}}
+                    <div class="card mx-1 mt-2" style="width: 250px">
+                        <div class="card-body">
+                            <div class="col">
+                                <h6 class="text-truncate">{{$file->filename}}</h6>
                             </div>
-                        </div> 
-                    @endif
+                            <h6 class="card-subtitle mb-2 {{ $file->user == NULL ? 'text-danger' : 'text-muted' }}">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
+                            @if (in_array(pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION), $viewable))
+                                <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                            @endif
+                            <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#removeFileModal"
+                                data-url="{{route('file.delete', $file)}}"
+                                id="btn-delete-file">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div> 
                 @endforeach
             </div>
         </div>
@@ -115,59 +85,27 @@
         
                 <tbody>
                     @foreach ($files as $file)
-                    @if($LoggedUserInfo['role'] != 'Admin')
-                        @if($file->user != NULL )
-                            @if($file->user->role == $LoggedUserInfo['role'])
-                                <tr>
-                                    <td>{{$file->filename}}</td>
-                                    <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
-                                    <td>{{ $file->created_at->format('F d, Y \a\t H:i:s') }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
-                                    <td>
-                                        <div class="d-flex justify-content-center">
-                                            <div>
-                                                <a href="#">
-                                                    <button id="viewUser" class="btn btn-primary btn-sm view">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
-                                                </a>
-                                            </div>
-                                            <form action="#" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-success btn-sm mx-2">
-                                                    <i class="fas fa-download"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
-                        @endif
-                    @else
+                   
                         <tr>
                             <td>{{$file->filename}}</td>
-                            <td>{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
-                            <td>{{ $file->created_at->format('F d, Y \a\t H:i:s') }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
+                            <td class="{{ $file->user == NULL ? 'text-danger' : '' }}">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</td>
+                            <td>{{ $file->created_at->format('M d, Y \a\t H:i') }} <span class="text-muted">{{ $file->created_at->diffForHumans() }}</span> </td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <div>
-                                        <a href="#">
-                                            <button id="viewUser" class="btn btn-primary btn-sm view">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <form action="#" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-success btn-sm mx-2">
-                                            <i class="fas fa-download"></i>
-                                        </button>
-                                    </form>
+                                    @if (in_array(pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION), $viewable))
+                                        <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                                    @endif
+                                    <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success mx-1"><i class="fas fa-download"></i></a>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#removeFileModal"
+                                        data-url="{{route('file.delete', $file)}}"
+                                        id="btn-delete-file">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
-                    @endif
                     @endforeach
                 </tbody>
             </table>
@@ -175,7 +113,6 @@
     </div>
     
 
-    {{-- Delete FIle Modal --}}
     {{-- Delete Confirm Modal --}}
     <div class="modal fade" id="removeFileModal" aria-hidden="true">
         <div class="modal-dialog">

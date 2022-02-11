@@ -11,7 +11,7 @@
     
 </head>
 <body>
-    <div class="login-wrap mt-5">
+    <div class="login-wrap">
         <div class="login-html">
             <label class="tab">Sign In</label>
             <div class="login-form">
@@ -32,11 +32,11 @@
                             <label for="password" class="label">Password</label>
                             <input id="password" type="password" class="input" name="password">
                             <span class="text-danger">@error('password'){{ $message }} @enderror</span>
-                        </div>
+                        </div><br>
                         <div class="group">
                             <input type="submit" class="button" value="Log In">
                         </div>
-                        <div class="hr"></div>
+                        {{-- <div class="hr"></div> --}}
                     </form>
                 </div>
             </div>

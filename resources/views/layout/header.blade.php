@@ -14,6 +14,7 @@
           </a>
           <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
             <li><a class="dropdown-item" href="{{ route('view.myProfile') }}">Profile</a></li>
+            <li><a class="dropdown-item" href="{{ route('me.changepw') }}">Change Password</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ route('logout') }}">Log out</a></li>
           </ul>

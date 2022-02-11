@@ -6,18 +6,28 @@ use Illuminate\Http\Request;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\MainController;
 
 class FileController extends Controller
 {
     public function index(){
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
-        $files = File::all();
+        // $files = File::all();
         $user = User::with('file')->get();
+        if($data['LoggedUserInfo']->role != 'Admin'){
+            $files = File::wherehas('user', function(Builder $query){
+                $user = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
+                $query->where('role','=',$user['LoggedUserInfo']->role);
+            })->get();
+        } else {
+            $files = File::all();
+        }
         $viewable = [
             'pdf',
             'jpg',
             'png',
+            'txt',
         ];
 
         return view('files', compact('files', 'user', 'viewable'), $data);
@@ -28,25 +38,39 @@ class FileController extends Controller
         $userid = $data['LoggedUserInfo']->id;
 
         $req->validate([
-            'file' => 'required|mimes:csv,txt,xlx,xls,pdf,jpg,jpeg,png,docx,pptx|max:8192'
+            'file' => 'required',
+            'file.*' => 'mimes:csv,txt,xlx,xls,pdf,jpg,jpeg,png,docx,pptx|max:8192'
         ]);
 
-        $fileModel = new File;
+        // $fileModel = new File;
+        if($req->hasFile('file')) {
+            foreach($req->file('file') as $key => $file){
 
-        if($req->file()) {
-            $fileName = $req->file->getClientOriginalName();
-            $filePath = $req->file('file')->storeAs('uploads', $fileName, 'public');
+                $fileName = $file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
 
-            $fileModel->filename = $fileName;
-            $fileModel->filepath = '/storage/' . $filePath;
-            $fileModel->uploader_id = $userid;
+                $insert[$key]['filename'] = $fileName;
+                $insert[$key]['filepath'] = '/storage/' . $filePath;
+                $insert[$key]['uploader_id'] = $userid;
+                $insert[$key]['created_at'] = now();
 
-            $fileModel->save();
+                // $fileModel->filename = $fileName;
+                // $fileModel->filepath = '/storage/' . $filePath;
+                // $fileModel->uploader_id = $userid;
 
-            return back()
-                    ->with('success','File has been uploaded.')
-                    ->with('file', $fileName);
+                // $fileModel->save();
+
+                // return back()
+                //         ->with('success','File has been uploaded.')
+                //         ->with('file', $fileName);
+            }
         }
+        
+        File::insert($insert);
+
+        return back()
+                        ->with('success','File has been uploaded.')
+                        ->with('file', $fileName);
     }
 
     public function view(File $file){
