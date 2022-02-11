@@ -1,16 +1,17 @@
 @extends('layout.master')
 @section('content')
-    
+
+{{-- Upload Form --}}
 <div class="container">
     <form action="{{ route('uploadfile') }}" method="post" enctype="multipart/form-data">
         <h3 class="text-center mb-3">Upload Files</h3>
         @csrf
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success">
-                <strong>{{ $message }}</strong>
+        @if(Session::get('success'))
+            <div class="alert alert-success alert-dismissible fade show">
+                <strong>File has been uploaded successfully!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -58,8 +59,18 @@
                                             <h6 class="text-truncate">{{$file->filename}}</h6>
                                         </div>
                                         <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
-                                        <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
-                                    <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
+                                        {{-- <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a> --}}
+                                        @if (in_array(pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION), $viewable))
+                                            <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                                        @endif
+                                        <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            data-toggle="modal"
+                                            data-target="#removeFileModal"
+                                            data-url="{{route('file.delete', $file)}}"
+                                            id="btn-delete-file">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
                             @endif
@@ -71,9 +82,19 @@
                                 <div class="col">
                                     <h6 class="text-truncate">{{$file->filename}}</h6>
                                 </div>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
-                            <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a>
-                            <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ $file->user == NULL ? 'Deleted User' : $file->user->first_name.' '.$file->user->last_name }}</h6>
+                                {{-- <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary {{ pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'pptx' || pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION) == 'docx' ? 'disabled' : '' }}"><i class="fas fa-eye"></i></a> --}}
+                                @if (in_array(pathinfo(storage_path($file->filepath), PATHINFO_EXTENSION), $viewable))
+                                    <a href="{{ route('viewFile', $file) }}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                                @endif
+                                <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success"><i class="fas fa-download"></i></a>
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                    data-toggle="modal"
+                                    data-target="#removeFileModal"
+                                    data-url="{{route('file.delete', $file)}}"
+                                    id="btn-delete-file">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </div> 
                     @endif
@@ -153,5 +174,43 @@
         </div>
     </div>
     
+
+    {{-- Delete FIle Modal --}}
+    {{-- Delete Confirm Modal --}}
+    <div class="modal fade" id="removeFileModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeFileLabel">Confirmation</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{route('file.delete', $file)}}" method="POST" id="removeFileModalForm">
+                    @method('DELETE')
+                    @csrf
+                    <div class="modal-body">
+                        Are you sure you want to delete this file?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash icon-left"></i> Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).on('click', '#btn-delete-file', function(e) {
+        e.preventDefault();
+
+        const url = $(this).data('url');
+
+        $('#removeFileModalForm').attr('action', url);
+    });
+</script>
 @endsection

@@ -20,7 +20,7 @@
     <title>{{ config('app.name') }}</title>
 
 </head>
-<body>
+<body class="container-fluid-sm">
 
     <div id="wrapper">
 

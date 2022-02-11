@@ -19,7 +19,7 @@ class CreateFilesTable extends Migration
             $table->string('filepath')->nullable();
             $table->timestamps();
             $table->integer('uploader_id');
-            $table->integer('folder_id');
+            $table->integer('folder_id')->nullable();
         });
     }
 

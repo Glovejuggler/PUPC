@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\File;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\MainController;
 
 class FileController extends Controller
@@ -13,8 +14,13 @@ class FileController extends Controller
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $files = File::all();
         $user = User::with('file')->get();
+        $viewable = [
+            'pdf',
+            'jpg',
+            'png',
+        ];
 
-        return view('files', compact('files', 'user'), $data);
+        return view('files', compact('files', 'user', 'viewable'), $data);
     }
 
     public function fileUpload(Request $req){
@@ -45,8 +51,22 @@ class FileController extends Controller
 
     public function view(File $file){
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
-        $file = File::findorfail($file->id);
+        $file = File::with('user')->findorfail($file->id);
+
+        if($data['LoggedUserInfo']->role != 'Admin'){
+            if($data['LoggedUserInfo']->role != $file->user->role){
+                return redirect()->back();
+            }
+        }
         
         return view('viewFile', compact('file'), $data);
+    }
+
+    public function trash(File $file){
+        $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
+        $file->delete();
+        unlink(storage_path('../public/storage/uploads/'.$file->filename));
+
+        return Redirect()->route('uploadfile');
     }
 }

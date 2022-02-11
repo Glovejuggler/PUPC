@@ -24,11 +24,7 @@ class UserController extends Controller
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
         $users = User::all();
         $roles = Role::all();
-
-        if ($data['LoggedUserInfo']->role != 'Admin'){
-            return redirect()->back();
-        }
-
+        
         return view('userslist', compact('users', 'roles'), $data);
     }
 
