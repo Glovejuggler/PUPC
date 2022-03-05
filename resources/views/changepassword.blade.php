@@ -6,8 +6,8 @@
         Change Password
     </h4>
     <form action="{{ route('me.updatepw') }}" method="POST">
-    @csrf
-    @method('PUT')
+        @csrf
+        @method('PUT')
         <div class="form-group">
             <label for="oldPassword" class="col-form-label">Old Password:</label>
             <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
@@ -24,9 +24,11 @@
         </div>
         <div class="d-grid gap-2 mt-3">
             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
-            <a href="{{ url()->previous() }}" type="button" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>
+            <a href="{{ url()->previous() }}" type="button" class="btn btn-secondary"><i class="fas fa-times"></i>
+                Cancel</a>
         </div>
     </form>
 </div>
+
 
 @endsection

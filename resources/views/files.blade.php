@@ -66,6 +66,31 @@
                                 id="btn-delete-file">
                                 <i class="fas fa-trash"></i>
                             </button>
+
+                            {{-- Delete Confirm Modal --}}
+                            <div class="modal fade" id="removeFileModal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="removeFileLabel">Confirmation</h5>
+                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{route('file.delete', $file)}}" method="POST" id="removeFileModalForm">
+                                            @method('DELETE')
+                                            @csrf
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this file?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash icon-left"></i> Delete
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div> 
                 @endforeach
@@ -98,11 +123,36 @@
                                     <a href="{{ $file->filepath }}" download class="btn btn-sm btn-success mx-1"><i class="fas fa-download"></i></a>
                                     <button type="submit" class="btn btn-danger btn-sm"
                                         data-toggle="modal"
-                                        data-target="#removeFileModal"
+                                        data-target="#removeFileModalT"
                                         data-url="{{route('file.delete', $file)}}"
                                         id="btn-delete-file">
                                         <i class="fas fa-trash"></i>
                                     </button>
+
+                                    {{-- Delete Confirm Modal --}}
+                                    <div class="modal fade" id="removeFileModalT" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="removeFileLabel">Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{route('file.delete', $file)}}" method="POST" id="removeFileModalForm">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete this file?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash icon-left"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -113,30 +163,7 @@
     </div>
     
 
-    {{-- Delete Confirm Modal --}}
-    <div class="modal fade" id="removeFileModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="removeFileLabel">Confirmation</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{route('file.delete', $file)}}" method="POST" id="removeFileModalForm">
-                    @method('DELETE')
-                    @csrf
-                    <div class="modal-body">
-                        Are you sure you want to delete this file?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="fas fa-trash icon-left"></i> Delete
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    
 </div>
 @endsection
 

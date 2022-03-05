@@ -13,7 +13,7 @@ class FileController extends Controller
 {
     public function index(){
         $data = ['LoggedUserInfo'=>User::where('id', '=', session('LoggedUser'))->first()];
-        // $files = File::all();
+        
         $user = User::with('file')->get();
         if($data['LoggedUserInfo']->role != 'Admin'){
             $files = File::wherehas('user', function(Builder $query){

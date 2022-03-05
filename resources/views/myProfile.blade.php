@@ -62,6 +62,31 @@
                                         id="btn-delete-file">
                                         <i class="fas fa-trash"></i>
                                     </button>
+
+                                    {{-- Delete Confirm Modal --}}
+                                    <div class="modal fade" id="removeFileModal" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="removeFileLabel">Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{route('file.delete', $file)}}" method="POST" id="removeFileModalForm">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete this file?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash icon-left"></i> Delete
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -71,30 +96,19 @@
         </div>
     </div>
 
-    {{-- Delete Confirm Modal --}}
-    <div class="modal fade" id="removeFileModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="removeFileLabel">Confirmation</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{route('file.delete', $file)}}" method="POST" id="removeFileModalForm">
-                    @method('DELETE')
-                    @csrf
-                    <div class="modal-body">
-                        Are you sure you want to delete this file?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="fas fa-trash icon-left"></i> Delete
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+    $(document).on('click', '#btn-delete-file', function(e) {
+        e.preventDefault();
+
+        const url = $(this).data('url');
+
+        $('#removeFileModalForm').attr('action', url);
+    });
+</script>
 @endsection
